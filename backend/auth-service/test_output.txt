@@ -1,0 +1,235 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.0, pytest-9.0.2, pluggy-1.6.0
+rootdir: /Users/prana/Desktop/MicroTaskHub/backend/auth-service
+plugins: anyio-4.11.0
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine SELECT @@sql_mode
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine SELECT @@lower_case_table_names
+2026-01-24 10:45:28,266 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,267 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,267 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`user_roles`
+2026-01-24 10:45:28,267 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,277 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`role_permissions`
+2026-01-24 10:45:28,277 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,279 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`roles`
+2026-01-24 10:45:28,279 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,280 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`permissions`
+2026-01-24 10:45:28,280 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,281 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`audit_logs`
+2026-01-24 10:45:28,282 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,282 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`tasks`
+2026-01-24 10:45:28,282 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,283 INFO sqlalchemy.engine.Engine DESCRIBE `microtaskhub`.`users`
+2026-01-24 10:45:28,283 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-24 10:45:28,285 INFO sqlalchemy.engine.Engine COMMIT
+collected 1 item
+
+tests/test_tasks.py 2026-01-24 10:45:28,332 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,333 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,333 INFO sqlalchemy.engine.Engine [generated in 0.00008s] {'email_1': 'admin@task.com', 'param_1': 1}
+2026-01-24 10:45:28,334 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,336 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,336 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,336 INFO sqlalchemy.engine.Engine [cached since 0.003756s ago] {'email_1': 'admin@task.com', 'param_1': 1}
+2026-01-24 10:45:28,345 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,346 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,346 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,346 INFO sqlalchemy.engine.Engine [cached since 0.01376s ago] {'email_1': 'manager@task.com', 'param_1': 1}
+2026-01-24 10:45:28,347 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,348 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,349 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,349 INFO sqlalchemy.engine.Engine [cached since 0.01596s ago] {'email_1': 'manager@task.com', 'param_1': 1}
+2026-01-24 10:45:28,356 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,357 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,357 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,357 INFO sqlalchemy.engine.Engine [cached since 0.02487s ago] {'email_1': 'user@task.com', 'param_1': 1}
+2026-01-24 10:45:28,358 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,360 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,360 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,360 INFO sqlalchemy.engine.Engine [cached since 0.02714s ago] {'email_1': 'user@task.com', 'param_1': 1}
+2026-01-24 10:45:28,367 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,369 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,370 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,370 INFO sqlalchemy.engine.Engine [cached since 0.03699s ago] {'email_1': 'user2@task.com', 'param_1': 1}
+2026-01-24 10:45:28,371 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-24 10:45:28,372 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 10:45:28,372 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+2026-01-24 10:45:28,372 INFO sqlalchemy.engine.Engine [cached since 0.03977s ago] {'email_1': 'user2@task.com', 'param_1': 1}
+2026-01-24 10:45:28,380 INFO sqlalchemy.engine.Engine ROLLBACK
+Failed to create task: 401 {"detail":"Could not validate credentials"}
+F
+
+=================================== FAILURES ===================================
+________________________________ test_task_flow ________________________________
+
+client = <starlette.testclient.TestClient object at 0x10ce66510>
+
+    def test_task_flow(client):
+        # Create Users
+        admin_token = create_user(client, "admin@task.com", "pass", "Admin", "IT")
+        manager_token = create_user(client, "manager@task.com", "pass", "Manager", "Engineering")
+        user_token = create_user(client, "user@task.com", "pass", "User", "Engineering")
+        user2_token = create_user(client, "user2@task.com", "pass", "User", "HR")
+    
+        # 1. Admin creates task
+        res = client.post("/tasks/",
+            json={
+                "title": "Admin Task",
+                "priority": "high",
+                "due_date": (datetime.utcnow() + timedelta(days=1)).isoformat()
+            },
+            headers={"Authorization": f"Bearer {admin_token}"}
+        )
+        if res.status_code != 200:
+            print(f"Failed to create task: {res.status_code} {res.text}")
+>       assert res.status_code == 200
+E       assert 401 == 200
+E        +  where 401 = <Response [401 Unauthorized]>.status_code
+
+tests/test_tasks.py:75: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [generated in 0.00008s] {'email_1': 'admin@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.003756s ago] {'email_1': 'admin@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.01376s ago] {'email_1': 'manager@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.01596s ago] {'email_1': 'manager@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.02487s ago] {'email_1': 'user@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.02714s ago] {'email_1': 'user@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.03699s ago] {'email_1': 'user2@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.email AS users_email, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.phone_no AS users_phone_no, users.`role` AS users_role, users.department AS users_department, users.is_active AS users_is_active, users.created_at AS users_created_at 
+FROM users 
+WHERE users.email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 0.03977s ago] {'email_1': 'user2@task.com', 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+=============================== warnings summary ===============================
+schemas.py:18
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/schemas.py:18: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UserResponse(BaseModel):
+
+schemas.py:52
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/schemas.py:52: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class TaskResponse(TaskBase):
+
+rbac_schemas.py:12
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/rbac_schemas.py:12: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Permission(PermissionBase):
+
+rbac_schemas.py:24
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/rbac_schemas.py:24: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Role(RoleBase):
+
+rbac_schemas.py:39
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/rbac_schemas.py:39: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class AuditLog(AuditLogBase):
+
+main.py:11
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/main.py:11: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+../../../../../../Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/fastapi/applications.py:4575
+  /Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/fastapi/applications.py:4575: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+  /Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/sqlalchemy/sql/schema.py:3624: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return util.wrap_callable(lambda ctx: fn(), fn)  # type: ignore
+
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+tests/test_tasks.py::test_task_flow
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/auth.py:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+
+tests/test_tasks.py::test_task_flow
+  /Users/prana/Desktop/MicroTaskHub/backend/auth-service/tests/test_tasks.py:69: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "due_date": (datetime.utcnow() + timedelta(days=1)).isoformat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_tasks.py::test_task_flow - assert 401 == 200
+======================== 1 failed, 18 warnings in 0.51s ========================

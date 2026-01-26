@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Register from './components/Register'
 import Login from './components/Login'
@@ -7,16 +7,37 @@ import Dashboard from './components/Dashboard'
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token') || null)
   const [currentView, setCurrentView] = useState('login')
+  const [user, setUser] = useState(null)
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('userEmail')
     setAuthToken(null)
+    setUser(null)
     setCurrentView('login')
   }
 
-  if (authToken) {
-    return <Dashboard authToken={authToken} onLogout={handleLogout} />
+  useEffect(() => {
+    if (authToken) {
+      fetch('/api/users/me', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      })
+      .then(res => {
+        if (res.ok) return res.json()
+        throw new Error('Failed to fetch user')
+      })
+      .then(data => setUser(data))
+      .catch(err => {
+        console.error(err)
+        handleLogout()
+      })
+    }
+  }, [authToken])
+
+  if (authToken && user) {
+    return <Dashboard authToken={authToken} user={user} onLogout={handleLogout} />
   }
 
   return (
