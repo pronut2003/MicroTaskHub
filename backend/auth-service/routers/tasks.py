@@ -9,15 +9,12 @@ import models
 import schemas
 import rbac
 
-# Remove local get_db and use databse.get_db
 from databse import get_db
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 def check_task_permission(task: models.Task, user: models.User, action: str):
-    """
-    Centralized permission checker for tasks
-    """
+   
     user_roles = [r.name for r in user.roles_rel]
     if user.role and user.role not in user_roles:
         user_roles.append(user.role)
@@ -27,10 +24,10 @@ def check_task_permission(task: models.Task, user: models.User, action: str):
         
     if action == "read":
         if "Manager" in user_roles:
-            # Manager can read tasks in their department or their own
+            
             if task.department and task.department == user.department:
                 return True
-        # User can read if they created it or are assigned
+        
         if task.created_by_id == user.id or task.assigned_to_id == user.id:
             return True
             
@@ -42,7 +39,7 @@ def check_task_permission(task: models.Task, user: models.User, action: str):
             return True
             
     elif action == "delete":
-        # Only Creator or Admin can delete
+       
         if task.created_by_id == user.id:
             return True
             
@@ -66,7 +63,7 @@ def create_task(
     if task.due_date and task.due_date < datetime.utcnow():
         raise HTTPException(status_code=400, detail="Due date must be in the future")
         
-    # Auto-assign department if not provided and user is Manager/User
+    
     department = task.department
     if not department and current_user.department:
         department = current_user.department
@@ -104,15 +101,15 @@ def list_tasks(
 ):
     query = db.query(models.Task).filter(models.Task.deleted_at.is_(None))
     
-    # RBAC Filtering
+
     user_roles = [r.name for r in current_user.roles_rel]
     if current_user.role and current_user.role not in user_roles:
         user_roles.append(current_user.role)
 
     if "Admin" in user_roles:
-        pass # See all
+        pass 
     elif "Manager" in user_roles:
-        # See dept OR own
+        
         conditions = [
             models.Task.created_by_id == current_user.id,
             models.Task.assigned_to_id == current_user.id
@@ -121,13 +118,13 @@ def list_tasks(
             conditions.append(models.Task.department == current_user.department)
         query = query.filter(or_(*conditions))
     else:
-        # See own
+        
         query = query.filter(or_(
             models.Task.created_by_id == current_user.id,
             models.Task.assigned_to_id == current_user.id
         ))
         
-    # Filters
+
     if status:
         query = query.filter(models.Task.status == status)
     if priority:
@@ -139,10 +136,9 @@ def list_tasks(
     if to_date:
         query = query.filter(models.Task.due_date <= to_date)
         
-    # Count total before pagination
+   
     total = query.count()
         
-    # Sorting
     if sort_desc:
         query = query.order_by(desc(getattr(models.Task, sort_by, models.Task.created_at)))
     else:
@@ -150,7 +146,6 @@ def list_tasks(
         
     items = query.offset(skip).limit(limit).all()
     
-    # Calculate pages
     pages = math.ceil(total / limit) if limit > 0 else 0
     page = (skip // limit) + 1 if limit > 0 else 1
     
@@ -196,7 +191,6 @@ def update_task(
         if task.status == models.TaskStatus.COMPLETED and task_update.status == models.TaskStatus.PENDING:
              raise HTTPException(status_code=400, detail="Cannot revert completed task to pending")
              
-    # Apply updates
     update_data = task_update.dict(exclude_unset=True)
     for key, value in update_data.items():
         setattr(task, key, value)

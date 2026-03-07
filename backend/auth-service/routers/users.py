@@ -20,14 +20,11 @@ def read_users(
     db: Session = Depends(get_db), 
     current_user: models.User = Depends(rbac.verify_manager)
 ):
-    # Scope validation: Managers can only see non-admin users
     query = db.query(models.User)
     
     user_roles = [r.name for r in current_user.roles_rel]
     if "Admin" not in user_roles and current_user.role != "Admin":
-        # Filter out Admins for Managers
-        # This is a basic scope implementation
-        # Ideally we would filter by team_id
+   
         query = query.filter(models.User.role != "Admin")
         
     return query.offset(skip).limit(limit).all()

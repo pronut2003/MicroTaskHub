@@ -8,7 +8,7 @@ import DashboardStats from './DashboardStats'
 
 function Dashboard({ authToken, user, onLogout }) {
   const [activeTab, setActiveTab] = useState('overview')
-  const [viewMode, setViewMode] = useState('list') // 'list' | 'board' | 'calendar'
+  const [viewMode, setViewMode] = useState('list') 
   const [tasks, setTasks] = useState([])
   const [users, setUsers] = useState([])
   const [auditLogs, setAuditLogs] = useState([])
@@ -42,7 +42,7 @@ function Dashboard({ authToken, user, onLogout }) {
           })
           if (res.ok) {
               const data = await res.json()
-              // Handle both paginated and non-paginated responses for backward compatibility
+              
               setTasks(data.items || data)
           }
       } catch (e) {

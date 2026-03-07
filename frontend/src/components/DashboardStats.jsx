@@ -12,7 +12,6 @@ function DashboardStats({ authToken, userRole }) {
             try {
                 const headers = { 'Authorization': `Bearer ${authToken}` }
                 
-                // Fetch all stats in parallel
                 const promises = [
                     fetch('/api/dashboard/stats', { headers }).then(r => r.json()),
                     fetch('/api/dashboard/tasks-time', { headers }).then(r => r.json()),

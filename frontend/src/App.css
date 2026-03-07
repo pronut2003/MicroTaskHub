@@ -830,7 +830,6 @@ body {
   margin-bottom: 4px;
 }
 
-/* Toggle Buttons */
 .view-toggle {
     background: white;
     padding: 4px;
@@ -894,7 +893,6 @@ body {
     margin-top: 16px;
 }
 
-/* Calendar Styles */
 .calendar-container {
     background: white;
     border-radius: 12px;

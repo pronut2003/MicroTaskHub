@@ -28,7 +28,7 @@ def create_role(
     new_role = models.Role(name=role.name, description=role.description)
     db.add(new_role)
     
-    # Audit Log
+  
     rbac.log_audit(
         db=db,
         user_id=current_user.id,
@@ -50,30 +50,28 @@ def assign_roles_to_user(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Get roles
     roles = db.query(models.Role).filter(models.Role.name.in_(roles_update.role_names)).all()
     if len(roles) != len(roles_update.role_names):
         raise HTTPException(status_code=400, detail="Some roles not found")
     
     user.roles_rel = roles
     
-    # Update legacy role column to the first role for backward compatibility
     if roles:
         user.role = roles[0].name
     
-    # Audit Log
-    rbac.log_audit(
-        db=db,
+    log = models.AuditLog(
         user_id=current_user.id,
         action="ASSIGN_ROLES",
         details=f"Assigned roles {roles_update.role_names} to user {user.email}"
     )
+    db.add(log)
     
+    db.commit()
     return user.roles_rel
 
 @router.post("/initialize")
 def initialize_rbac(db: Session = Depends(databse.get_db)):
-    """Initialize default roles and permissions. Safe to run multiple times."""
+
     roles = ["User", "Manager", "Admin"]
     created_roles = []
     for role_name in roles:

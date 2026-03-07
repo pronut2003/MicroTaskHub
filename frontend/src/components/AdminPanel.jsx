@@ -18,7 +18,8 @@ function AdminPanel({ authToken, onRoleChange }) {
         if (res.ok) {
             setRoles(await res.json())
         }
-    } catch (e) {
+    } catch (e) 
+    {
         console.error(e)
     }
   }
