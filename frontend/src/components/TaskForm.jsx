@@ -4,7 +4,7 @@ function TaskForm({ task, onSubmit, onCancel, user }) {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        priority: 'medium',
+        priority: 'MEDIUM',
         due_date: '',
         department: user.department || ''
     })
@@ -73,10 +73,10 @@ function TaskForm({ task, onSubmit, onCancel, user }) {
                                 value={formData.priority}
                                 onChange={e => setFormData({...formData, priority: e.target.value})}
                             >
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                                <option value="critical">Critical</option>
+                                <option value="LOW">Low</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="HIGH">High</option>
+                                <option value="CRITICAL">Critical</option>
                             </select>
                         </div>
 
@@ -90,7 +90,7 @@ function TaskForm({ task, onSubmit, onCancel, user }) {
                         </div>
                     </div>
                     
-                    {(user.role === 'Admin' || user.role === 'Manager') && (
+                    {(user.role === 'admin' || user.role === 'manager') && (
                          <div className="form-group">
                             <label>Department</label>
                             <input 

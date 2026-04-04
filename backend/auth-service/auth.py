@@ -2,12 +2,13 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 import jwt
 import os
-import hashlib
-import secrets
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
-SECRET_KEY = os.getenv("JWT_SECRET", "supersecret")
+SECRET_KEY = os.getenv("SECRET_KEY", "supersecret")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

@@ -4,13 +4,13 @@ import os
 from dotenv import load_dotenv
 from urllib.parse import quote
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 
-MYSQL_USER = os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "password")
-MYSQL_DB = os.getenv("MYSQL_DB", "microtaskhub")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-MYSQL_PORT = os.getenv("MYSQL_PORT")
+MYSQL_USER = os.getenv("DBUSER", "root")
+MYSQL_PASSWORD = os.getenv("DBPWD", "password")
+MYSQL_DB = os.getenv("DBNAME", "microtaskhub")
+MYSQL_HOST = os.getenv("DBHOST", "localhost")
+MYSQL_PORT = os.getenv("DBPORT", "3306")
 
 ENCODED_PASSWORD = quote(MYSQL_PASSWORD, safe='')
 DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{ENCODED_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"

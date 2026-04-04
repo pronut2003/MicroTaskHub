@@ -4,45 +4,39 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc, asc, or_
 from typing import List, Optional
 from datetime import datetime
-import databse
+import database
 import models
 import schemas
 import rbac
 
-from databse import get_db
+from database import get_db
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 def check_task_permission(task: models.Task, user: models.User, action: str):
-   
-    user_roles = [r.name for r in user.roles_rel]
-    if user.role and user.role not in user_roles:
-        user_roles.append(user.role)
+    user_roles = user.roles
 
     if "Admin" in user_roles:
         return True
-        
+
     if action == "read":
         if "Manager" in user_roles:
-            
             if task.department and task.department == user.department:
                 return True
-        
-        if task.created_by_id == user.id or task.assigned_to_id == user.id:
+        if task.created_by_user_id == user.id or task.assigned_to_user_id == user.id:
             return True
-            
+
     elif action == "update":
         if "Manager" in user_roles:
             if task.department and task.department == user.department:
                 return True
-        if task.created_by_id == user.id or task.assigned_to_id == user.id:
+        if task.created_by_user_id == user.id or task.assigned_to_user_id == user.id:
             return True
-            
+
     elif action == "delete":
-       
-        if task.created_by_id == user.id:
+        if task.created_by_user_id == user.id:
             return True
-            
+
     return False
 
 def log_audit(db: Session, user_id: int, action: str, details: str):
@@ -75,8 +69,8 @@ def create_task(
         status=models.TaskStatus.PENDING,
         due_date=task.due_date,
         department=department,
-        created_by_id=current_user.id,
-        assigned_to_id=task.assigned_to_id
+        created_by_user_id=current_user.id,
+        assigned_to_user_id=task.assigned_to_id
     )
     db.add(new_task)
     db.commit()
@@ -102,26 +96,22 @@ def list_tasks(
     query = db.query(models.Task).filter(models.Task.deleted_at.is_(None))
     
 
-    user_roles = [r.name for r in current_user.roles_rel]
-    if current_user.role and current_user.role not in user_roles:
-        user_roles.append(current_user.role)
+    user_roles = current_user.roles
 
     if "Admin" in user_roles:
-        pass 
+        pass
     elif "Manager" in user_roles:
-        
         conditions = [
-            models.Task.created_by_id == current_user.id,
-            models.Task.assigned_to_id == current_user.id
+            models.Task.created_by_user_id == current_user.id,
+            models.Task.assigned_to_user_id == current_user.id
         ]
         if current_user.department:
             conditions.append(models.Task.department == current_user.department)
         query = query.filter(or_(*conditions))
     else:
-        
         query = query.filter(or_(
-            models.Task.created_by_id == current_user.id,
-            models.Task.assigned_to_id == current_user.id
+            models.Task.created_by_user_id == current_user.id,
+            models.Task.assigned_to_user_id == current_user.id
         ))
         
 

@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react'
 
 function TaskBoard({ tasks, onEdit, onDelete, onStatusChange }) {
     const columns = {
-        pending: 'Pending',
-        in_progress: 'In Progress',
-        completed: 'Completed',
-        cancelled: 'Cancelled'
+        PENDING: 'Pending',
+        IN_PROGRESS: 'In Progress',
+        COMPLETED: 'Completed',
+        CANCELLED: 'Cancelled'
     }
 
     const getPriorityColor = (p) => {
         switch(p) {
-            case 'critical': return '#ef4444';
-            case 'high': return '#f59e0b';
-            case 'medium': return '#3b82f6';
-            case 'low': return '#10b981';
+            case 'CRITICAL': return '#ef4444';
+            case 'HIGH': return '#f59e0b';
+            case 'MEDIUM': return '#3b82f6';
+            case 'LOW': return '#10b981';
             default: return '#6b7280';
         }
     }

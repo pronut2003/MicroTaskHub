@@ -18,7 +18,7 @@ function DashboardStats({ authToken, userRole }) {
                     fetch('/api/dashboard/activity', { headers }).then(r => r.json())
                 ]
 
-                if (userRole === 'Admin') {
+                if (userRole === 'admin') {
                     promises.push(fetch('/api/dashboard/admin/stats', { headers }).then(r => r.json()))
                 }
 
@@ -27,7 +27,7 @@ function DashboardStats({ authToken, userRole }) {
                 setTaskStats(results[0])
                 setTimeStats(results[1])
                 setActivityStats(results[2])
-                if (userRole === 'Admin') {
+                if (userRole === 'admin') {
                     setAdminStats(results[3])
                 }
             } catch (error) {
@@ -98,7 +98,7 @@ function DashboardStats({ authToken, userRole }) {
             </div>
 
             {/* Admin Specific Stats */}
-            {userRole === 'Admin' && adminStats && (
+            {userRole === 'admin' && adminStats && (
                 <>
                     <h3 style={{margin: '24px 0 16px'}}>System Overview (Admin)</h3>
                     <div className="dashboard-stats-grid">

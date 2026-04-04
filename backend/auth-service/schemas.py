@@ -20,8 +20,8 @@ class UserResponse(BaseModel):
     email: EmailStr
     full_name: str
     phone_no: str
-    role: str
-    department: Optional[str]
+    role: Optional[str] = None
+    department: Optional[str] = None
     roles: list[str] = []
     is_active: bool
 
@@ -52,10 +52,11 @@ class TaskUpdate(BaseModel):
 class TaskResponse(TaskBase):
     id: int
     status: TaskStatus
-    created_by_id: int
+    created_by_user_id: Optional[int] = None
+    assigned_to_user_id: Optional[int] = None
     created_at: datetime
     updated_at: datetime
-    creator: UserResponse
+    creator: Optional[UserResponse] = None
     assignee: Optional[UserResponse] = None
 
     class Config:

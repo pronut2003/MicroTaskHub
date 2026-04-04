@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-import databse
+import database
 import models
 import rbac_schemas
 import rbac
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/rbac", tags=["rbac"])
 
 @router.get("/roles", response_model=List[rbac_schemas.Role])
 def list_roles(
-    db: Session = Depends(databse.get_db),
+    db: Session = Depends(database.get_db),
     current_user: models.User = Depends(rbac.verify_admin)
 ):
     return db.query(models.Role).all()
@@ -18,7 +18,7 @@ def list_roles(
 @router.post("/roles", response_model=rbac_schemas.Role)
 def create_role(
     role: rbac_schemas.RoleCreate,
-    db: Session = Depends(databse.get_db),
+    db: Session = Depends(database.get_db),
     current_user: models.User = Depends(rbac.verify_admin)
 ):
     db_role = db.query(models.Role).filter(models.Role.name == role.name).first()
@@ -43,7 +43,7 @@ def create_role(
 def assign_roles_to_user(
     user_id: int,
     roles_update: rbac_schemas.UserRoleUpdate,
-    db: Session = Depends(databse.get_db),
+    db: Session = Depends(database.get_db),
     current_user: models.User = Depends(rbac.verify_admin)
 ):
     user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -57,7 +57,7 @@ def assign_roles_to_user(
     user.roles_rel = roles
     
     if roles:
-        user.role = roles[0].name
+        user.role = roles[0].name.lower()
     
     log = models.AuditLog(
         user_id=current_user.id,
@@ -70,7 +70,7 @@ def assign_roles_to_user(
     return user.roles_rel
 
 @router.post("/initialize")
-def initialize_rbac(db: Session = Depends(databse.get_db)):
+def initialize_rbac(db: Session = Depends(database.get_db)):
 
     roles = ["User", "Manager", "Admin"]
     created_roles = []
@@ -88,7 +88,7 @@ def initialize_rbac(db: Session = Depends(databse.get_db)):
 def list_audit_logs(
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(databse.get_db),
+    db: Session = Depends(database.get_db),
     current_user: models.User = Depends(rbac.verify_admin)
 ):
     return db.query(models.AuditLog).order_by(models.AuditLog.timestamp.desc()).offset(skip).limit(limit).all()

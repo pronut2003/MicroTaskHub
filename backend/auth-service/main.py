@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import users, rbac, tasks, dashboard
-from databse import Base, engine, SessionLocal
+from database import Base, engine, SessionLocal
 import models
 
 Base.metadata.create_all(bind=engine)

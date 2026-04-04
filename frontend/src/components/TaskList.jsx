@@ -20,12 +20,12 @@ function TaskList({ tasks, onEdit, onDelete }) {
                         <tr key={task.id}>
                             <td>{task.title}</td>
                             <td>
-                                <span className={`status-badge status-${task.status}`}>
+                                <span className={`status-badge status-${task.status.toLowerCase()}`}>
                                     {task.status.replace('_', ' ')}
                                 </span>
                             </td>
                             <td>
-                                <span className={`priority-text priority-${task.priority}`}>
+                                <span className={`priority-text priority-${task.priority.toLowerCase()}`}>
                                     {task.priority}
                                 </span>
                             </td>

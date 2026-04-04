@@ -5,12 +5,12 @@ import jwt
 from jwt.exceptions import PyJWTError
 import auth
 import models
-import databse
+import database
 from typing import List, Optional
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(databse.get_db)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -34,16 +34,11 @@ class RoleChecker:
         self.allowed_roles = allowed_roles
 
     def __call__(self, user: models.User = Depends(get_current_user)):
-        # Check new RBAC roles
-        user_roles = [role.name for role in user.roles_rel]
-        
-        # Backward compatibility with string role
-        if user.role and user.role not in user_roles:
-            user_roles.append(user.role)
-            
+        user_roles = user.roles  # Uses the @property that returns capitalized role names
+
         if any(role in self.allowed_roles for role in user_roles):
             return user
-            
+
         raise HTTPException(status_code=403, detail=f"Operation not permitted. Required roles: {self.allowed_roles}")
 
 def verify_admin(user: models.User = Depends(get_current_user)):

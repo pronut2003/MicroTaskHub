@@ -3,14 +3,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, text
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
-import databse
+import database
 import models
 import rbac
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 def get_db():
-    db = databse.SessionLocal()
+    db = database.SessionLocal()
     try:
         yield db
     finally:
@@ -32,21 +32,18 @@ def get_task_stats(
     # Manager: Dept
     # User: Own
     
-    user_roles = [r.name for r in current_user.roles_rel]
-    if current_user.role and current_user.role not in user_roles:
-        user_roles.append(current_user.role)
-        
+    user_roles = current_user.roles
+
     if "Admin" in user_roles:
         pass
     elif "Manager" in user_roles:
         if current_user.department:
             query = query.filter(models.Task.department == current_user.department)
         else:
-            # Fallback for manager without dept: see own
-             query = query.filter(models.Task.created_by_id == current_user.id)
+            query = query.filter(models.Task.created_by_user_id == current_user.id)
     else:
-        query = query.filter(models.Task.assigned_to_id == current_user.id)
-        
+        query = query.filter(models.Task.assigned_to_user_id == current_user.id)
+
     results = query.group_by(models.Task.status).all()
     
     stats = {
@@ -57,8 +54,9 @@ def get_task_stats(
     }
     
     for status, count in results:
-        if status.value in stats:
-            stats[status.value] = count
+        key = status.value.lower()
+        if key in stats:
+            stats[key] = count
             
     return stats
 
@@ -78,9 +76,7 @@ def get_time_tasks_stats(
     # Base query logic
     base_query = db.query(models.Task)
     
-    user_roles = [r.name for r in current_user.roles_rel]
-    if current_user.role and current_user.role not in user_roles:
-        user_roles.append(current_user.role)
+    user_roles = current_user.roles
 
     if "Admin" in user_roles:
         pass
@@ -88,9 +84,9 @@ def get_time_tasks_stats(
         if current_user.department:
             base_query = base_query.filter(models.Task.department == current_user.department)
         else:
-             base_query = base_query.filter(models.Task.created_by_id == current_user.id)
+            base_query = base_query.filter(models.Task.created_by_user_id == current_user.id)
     else:
-        base_query = base_query.filter(models.Task.assigned_to_id == current_user.id)
+        base_query = base_query.filter(models.Task.assigned_to_user_id == current_user.id)
         
     due_today = base_query.filter(
         models.Task.due_date >= today_start,
@@ -132,9 +128,7 @@ def get_activity_trend(
         func.count(models.AuditLog.id).label('count')
     ).filter(models.AuditLog.timestamp >= start_date)
     
-    user_roles = [r.name for r in current_user.roles_rel]
-    if current_user.role and current_user.role not in user_roles:
-        user_roles.append(current_user.role)
+    user_roles = current_user.roles
 
     if "Admin" in user_roles:
         pass

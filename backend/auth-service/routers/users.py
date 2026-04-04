@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-import databse as database
-from databse import get_db
+import database
+from database import get_db
 import models
 import schemas
 import auth
@@ -22,10 +22,9 @@ def read_users(
 ):
     query = db.query(models.User)
     
-    user_roles = [r.name for r in current_user.roles_rel]
-    if "Admin" not in user_roles and current_user.role != "Admin":
-   
-        query = query.filter(models.User.role != "Admin")
+    user_roles = current_user.roles
+    if "Admin" not in user_roles:
+        query = query.filter(models.User.role != models.UserRole.ADMIN)
         
     return query.offset(skip).limit(limit).all()
 
@@ -39,12 +38,14 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Phone number must contain only digits")
     
     hashed_pw = auth.hash_password(user.password)
+    # Convert role string ("User", "Manager", "Admin") to lowercase enum value
+    role_value = user.role.lower() if user.role else "user"
     new_user = models.User(
         email=user.email,
         password_hash=hashed_pw,
         full_name=user.full_name,
         phone_no=user.phone_no,
-        role=user.role,
+        role=role_value,
         department=user.department
     )
     db.add(new_user)
@@ -57,5 +58,6 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if not db_user or not auth.verify_password(user.password, db_user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    token = auth.create_access_token({"sub": db_user.email, "role": db_user.role})
+    role_value = db_user.role.value if db_user.role else "user"
+    token = auth.create_access_token({"sub": db_user.email, "role": role_value})
     return {"access_token": token, "token_type": "bearer"}

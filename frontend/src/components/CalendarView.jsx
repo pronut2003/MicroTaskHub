@@ -60,9 +60,9 @@ function CalendarView({ tasks, onEdit, onDateRangeChange }) {
                 <div className="day-number">{i}</div>
                 <div className="day-tasks">
                     {dayTasks.map(task => (
-                        <div 
-                            key={task.id} 
-                            className={`calendar-task status-${task.status}`}
+                        <div
+                            key={task.id}
+                            className={`calendar-task status-${task.status.toLowerCase()}`}
                             onClick={() => onEdit(task)}
                             title={task.title}
                         >

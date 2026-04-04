@@ -1,24 +1,24 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Table, Text, Enum
 from sqlalchemy.orm import relationship
 from datetime import datetime
-import databse
+import database
 import enum
 
 # Association tables
 # Legacy tables preserved for reference/migration safety
-user_roles = Table('user_roles', databse.Base.metadata,
+user_roles = Table('user_roles', database.Base.metadata,
     Column('user_id', Integer, ForeignKey('users.id')),
     Column('role_id', Integer, ForeignKey('roles.id')),
     Column('assigned_at', DateTime, default=datetime.utcnow)
 )
 
-role_permissions_legacy = Table('role_permissions_legacy', databse.Base.metadata,
+role_permissions_legacy = Table('role_permissions_legacy', database.Base.metadata,
     Column('role_id', Integer, ForeignKey('roles.id')),
     Column('permission_id', Integer, ForeignKey('permissions.permission_id'))
 )
 
 # New RBAC Junction Table
-class RolePermission(databse.Base):
+class RolePermission(database.Base):
     __tablename__ = "role_permissions"
     role = Column(Enum('user', 'manager', 'admin'), primary_key=True)
     permission_id = Column(Integer, ForeignKey('permissions.permission_id'), primary_key=True)
@@ -49,7 +49,7 @@ class AuditLogStatus(str, enum.Enum):
     SUCCESS = "success"
     FAILURE = "failure"
 
-class Department(databse.Base):
+class Department(database.Base):
     __tablename__ = "departments"
     department_id = Column(Integer, primary_key=True, index=True)
     department_name = Column(String(100), unique=True, nullable=False)
@@ -57,7 +57,7 @@ class Department(databse.Base):
     
     users = relationship("User", back_populates="department_obj")
 
-class Role(databse.Base):
+class Role(database.Base):
     __tablename__ = "roles"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), unique=True, index=True, nullable=False)
@@ -69,13 +69,13 @@ class Role(databse.Base):
     permissions = relationship("Permission", secondary=role_permissions_legacy, backref="roles")
     users = relationship("User", secondary=user_roles, back_populates="roles_rel")
 
-class Permission(databse.Base):
+class Permission(database.Base):
     __tablename__ = "permissions"
     id = Column("permission_id", Integer, primary_key=True, index=True)
     name = Column("permission_name", String(50), unique=True, index=True, nullable=False)
     description = Column(Text)
 
-class AuditLog(databse.Base):
+class AuditLog(database.Base):
     __tablename__ = "audit_logs"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
@@ -89,7 +89,7 @@ class AuditLog(databse.Base):
     
     user = relationship("User", backref="audit_logs")
 
-class Task(databse.Base):
+class Task(database.Base):
     __tablename__ = "tasks"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -115,7 +115,7 @@ class Task(databse.Base):
     creator = relationship("User", foreign_keys=[created_by_user_id], backref="created_tasks_new")
     assignee = relationship("User", foreign_keys=[assigned_to_user_id], backref="assigned_tasks_new")
 
-class User(databse.Base):
+class User(database.Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)

@@ -16,8 +16,8 @@ function Dashboard({ authToken, user, onLogout }) {
   const [showTaskModal, setShowTaskModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   
-  const isAdmin = user?.roles?.includes('Admin') || user?.role === 'Admin'
-  const isManager = user?.roles?.includes('Manager') || user?.role === 'Manager'
+  const isAdmin = user?.roles?.includes('Admin') || user?.role === 'admin'
+  const isManager = user?.roles?.includes('Manager') || user?.role === 'manager' || isAdmin
   const canManageUsers = isAdmin || isManager
 
   useEffect(() => {
@@ -329,7 +329,7 @@ function Dashboard({ authToken, user, onLogout }) {
                 <div className="report-card">
                     <h3>Tasks by Status</h3>
                     <div className="stats-grid">
-                        {['pending', 'in_progress', 'completed'].map(status => (
+                        {['PENDING', 'IN_PROGRESS', 'COMPLETED'].map(status => (
                             <div key={status} className="stat-item">
                                 <span className="stat-label">{status.replace('_', ' ')}</span>
                                 <span className="stat-value">
@@ -342,7 +342,7 @@ function Dashboard({ authToken, user, onLogout }) {
                 <div className="report-card">
                     <h3>Tasks by Priority</h3>
                     <div className="stats-grid">
-                        {['low', 'medium', 'high', 'critical'].map(p => (
+                        {['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].map(p => (
                             <div key={p} className="stat-item">
                                 <span className="stat-label">{p}</span>
                                 <span className="stat-value">
