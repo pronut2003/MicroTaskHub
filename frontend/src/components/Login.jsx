@@ -8,7 +8,7 @@ function Login({ onLoginSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!email || !password) {
       setError('Email and password are required')
       return
@@ -20,13 +20,8 @@ function Login({ onLoginSuccess }) {
     try {
       const response = await fetch('/api/users/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
@@ -37,7 +32,8 @@ function Login({ onLoginSuccess }) {
         return
       }
 
-      localStorage.setItem('userEmail', email)
+      localStorage.setItem('userEmail', data.user.email)
+      localStorage.setItem('userName', data.user.full_name)
       setEmail('')
       setPassword('')
       onLoginSuccess(data.access_token)
@@ -51,10 +47,10 @@ function Login({ onLoginSuccess }) {
   return (
     <form onSubmit={handleSubmit} className="auth-form">
       <div className="form-group">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="login-email">Email</label>
         <input
           type="email"
-          id="email"
+          id="login-email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
@@ -63,10 +59,10 @@ function Login({ onLoginSuccess }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="password">Password</label>
+        <label htmlFor="login-password">Password</label>
         <input
           type="password"
-          id="password"
+          id="login-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"

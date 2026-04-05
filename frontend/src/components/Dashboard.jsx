@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 function Dashboard({ authToken, onLogout }) {
-  const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') || 'User')
+  const [userName] = useState(localStorage.getItem('userName') || 'User')
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -20,6 +20,10 @@ function Dashboard({ authToken, onLogout }) {
       })
 
       if (!response.ok) {
+        if (response.status === 401) {
+          onLogout()
+          return
+        }
         throw new Error('Failed to fetch users')
       }
 
@@ -39,7 +43,7 @@ function Dashboard({ authToken, onLogout }) {
       <div className="dashboard-header">
         <div className="header-content">
           <h1>MicroTaskHub Dashboard</h1>
-          <p className="welcome-text">Welcome, <span className="user-email">{userEmail}</span></p>
+          <p className="welcome-text">Welcome, <span className="user-email">{userName}</span></p>
         </div>
         <button className="logout-button" onClick={onLogout}>Logout</button>
       </div>
@@ -47,15 +51,15 @@ function Dashboard({ authToken, onLogout }) {
       <div className="dashboard-content">
         <div className="users-section">
           <h2>Registered Users</h2>
-          
+
           {loading && <p className="loading-text">Loading users...</p>}
-          
+
           {error && <div className="error-message">{error}</div>}
-          
+
           {!loading && !error && users.length === 0 && (
             <p className="empty-state">No users found</p>
           )}
-          
+
           {!loading && users.length > 0 && (
             <div className="users-table-container">
               <table className="users-table">

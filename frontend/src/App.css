@@ -294,43 +294,6 @@ body {
   font-size: 16px;
 }
 
-.users-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 16px;
-  background: var(--light-bg);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
-}
-
-.user-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary-color);
-}
-
-.user-avatar {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
 .user-avatar-small {
   width: 36px;
   height: 36px;
@@ -343,22 +306,6 @@ body {
   font-weight: 600;
   font-size: 16px;
   flex-shrink: 0;
-}
-
-.user-info {
-  flex: 1;
-}
-
-.user-email-display {
-  color: var(--text-dark);
-  font-weight: 600;
-  margin-bottom: 4px;
-  word-break: break-word;
-}
-
-.user-id {
-  color: var(--text-light);
-  font-size: 12px;
 }
 
 .users-table-container {
@@ -457,9 +404,6 @@ body {
     width: 100%;
   }
 
-  .users-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
 }
 
 @media (max-width: 768px) {
@@ -517,10 +461,6 @@ body {
     width: 100%;
   }
 
-  .users-grid {
-    grid-template-columns: 1fr;
-  }
-
   .users-table {
     font-size: 12px;
   }
@@ -563,16 +503,6 @@ body {
     font-size: 12px;
   }
 
-  .user-card {
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .user-avatar {
-    width: 45px;
-    height: 45px;
-    font-size: 18px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -697,30 +627,10 @@ body {
     font-size: 10px;
   }
 
-  .user-card {
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
   .user-avatar-small {
     width: 32px;
     height: 32px;
     font-size: 14px;
-  }
-
-  .user-email-display {
-    font-size: 13px;
-    margin-bottom: 2px;
-  }
-
-  .user-id {
-    font-size: 10px;
   }
 
   .loading-text,

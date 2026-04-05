@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from datetime import datetime
-import databse
+from database import Base
 
-class User(databse.Base):
+
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -10,6 +11,6 @@ class User(databse.Base):
     password_hash = Column(String(255), nullable=False)
     full_name = Column(String(255), nullable=False)
     phone_no = Column(String(20), nullable=False)
-    role = Column(String(50), default="User") 
+    role = Column(String(50), default="User")
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
