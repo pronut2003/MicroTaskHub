@@ -11,6 +11,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('userEmail')
+    localStorage.removeItem('userName')
     setAuthToken(null)
     setCurrentView('login')
   }
@@ -23,7 +24,7 @@ function App() {
     <div className="auth-container">
       <div className="auth-card">
         <h1 className="app-title">MicroTaskHub</h1>
-        
+
         <div className="auth-tabs">
           <button
             className={`tab-button ${currentView === 'login' ? 'active' : ''}`}
@@ -46,9 +47,7 @@ function App() {
               localStorage.setItem('token', token)
             }} />
           ) : (
-            <Register onRegisterSuccess={() => {
-              setCurrentView('login')
-            }} />
+            <Register onRegisterSuccess={() => setCurrentView('login')} />
           )}
         </div>
       </div>
