@@ -34,6 +34,7 @@ function Login({ onLoginSuccess }) {
 
       localStorage.setItem('userEmail', data.user.email)
       localStorage.setItem('userName', data.user.full_name)
+      localStorage.setItem('userRole', data.user.role)
       setEmail('')
       setPassword('')
       onLoginSuccess(data.access_token)

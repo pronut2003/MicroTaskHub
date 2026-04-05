@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.orm import Session
 import jwt
 import os
+
+import database
+import models
 
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
@@ -43,3 +47,21 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+
+def get_current_user_from_db(
+    payload: dict = Depends(get_current_user),
+    db: Session = Depends(database.get_db),
+) -> models.User:
+    user = db.query(models.User).filter(models.User.email == payload.get("sub")).first()
+    if not user or not user.is_active:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found or inactive")
+    return user
+
+
+def require_role(allowed_roles: List[str]):
+    def role_checker(current_user: models.User = Depends(get_current_user_from_db)) -> models.User:
+        if current_user.role not in allowed_roles:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
+        return current_user
+    return role_checker

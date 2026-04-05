@@ -1,104 +1,102 @@
 import { useState, useEffect } from 'react'
 
-function Dashboard({ authToken, onLogout }) {
-  const [userName] = useState(localStorage.getItem('userName') || 'User')
-  const [users, setUsers] = useState([])
+function Dashboard({ authToken, userRole, onLogout }) {
+  const [stats, setStats] = useState(null)
+  const [adminStats, setAdminStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchUsers()
+    fetchDashboard()
   }, [])
 
-  const fetchUsers = async () => {
+  const fetchDashboard = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/users/', {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-        },
+      const response = await fetch('/api/dashboard/', {
+        headers: { 'Authorization': `Bearer ${authToken}` },
       })
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          onLogout()
-          return
-        }
-        throw new Error('Failed to fetch users')
-      }
-
+      if (response.status === 401) { onLogout(); return }
+      if (!response.ok) throw new Error('Failed to fetch dashboard')
       const data = await response.json()
-      setUsers(data)
+      setStats(data)
+
+      if (userRole === 'Admin') {
+        const adminResponse = await fetch('/api/dashboard/admin', {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        })
+        if (adminResponse.ok) {
+          setAdminStats(await adminResponse.json())
+        }
+      }
       setError('')
     } catch (err) {
-      setError('Could not load users')
+      setError('Could not load dashboard')
       console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
+  if (loading) return <div className="dashboard-content"><p className="loading-text">Loading dashboard...</p></div>
+  if (error) return <div className="dashboard-content"><div className="error-message">{error}</div></div>
+  if (!stats) return null
+
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <div className="header-content">
-          <h1>MicroTaskHub Dashboard</h1>
-          <p className="welcome-text">Welcome, <span className="user-email">{userName}</span></p>
+    <div className="dashboard-content">
+      <div className="users-section">
+        <h2>Task Overview</h2>
+        <div className="stats-grid">
+          <div className="stat-card blue">
+            <div className="stat-value">{stats.todo_count}</div>
+            <div className="stat-label">To Do</div>
+          </div>
+          <div className="stat-card yellow">
+            <div className="stat-value">{stats.in_progress_count}</div>
+            <div className="stat-label">In Progress</div>
+          </div>
+          <div className="stat-card green">
+            <div className="stat-value">{stats.done_count}</div>
+            <div className="stat-label">Done</div>
+          </div>
+          <div className="stat-card red">
+            <div className="stat-value">{stats.overdue_count}</div>
+            <div className="stat-label">Overdue</div>
+          </div>
+          <div className="stat-card orange">
+            <div className="stat-value">{stats.due_today_count}</div>
+            <div className="stat-label">Due Today</div>
+          </div>
+          <div className="stat-card purple">
+            <div className="stat-value">{stats.due_this_week_count}</div>
+            <div className="stat-label">Due This Week</div>
+          </div>
         </div>
-        <button className="logout-button" onClick={onLogout}>Logout</button>
       </div>
 
-      <div className="dashboard-content">
-        <div className="users-section">
-          <h2>Registered Users</h2>
-
-          {loading && <p className="loading-text">Loading users...</p>}
-
-          {error && <div className="error-message">{error}</div>}
-
-          {!loading && !error && users.length === 0 && (
-            <p className="empty-state">No users found</p>
-          )}
-
-          {!loading && users.length > 0 && (
-            <div className="users-table-container">
-              <table className="users-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td className="user-name-cell">
-                        <div className="user-avatar-small">{user.full_name.charAt(0).toUpperCase()}</div>
-                        <span>{user.full_name}</span>
-                      </td>
-                      <td>{user.email}</td>
-                      <td>{user.phone_no}</td>
-                      <td>
-                        <span className={`role-badge role-${user.role.toLowerCase()}`}>
-                          {user.role}
-                        </span>
-                      </td>
-                      <td>
-                        <span className={`status-badge ${user.is_active ? 'active' : 'inactive'}`}>
-                          {user.is_active ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {adminStats && (
+        <div className="users-section" style={{marginTop: '20px'}}>
+          <h2>System Metrics (Admin)</h2>
+          <div className="stats-grid">
+            <div className="stat-card blue">
+              <div className="stat-value">{adminStats.total_users}</div>
+              <div className="stat-label">Total Users</div>
             </div>
-          )}
+            <div className="stat-card green">
+              <div className="stat-value">{adminStats.active_users}</div>
+              <div className="stat-label">Active Users</div>
+            </div>
+            <div className="stat-card purple">
+              <div className="stat-value">{adminStats.total_tasks}</div>
+              <div className="stat-label">Total Tasks</div>
+            </div>
+            <div className="stat-card orange">
+              <div className="stat-value">{adminStats.recent_activity_count}</div>
+              <div className="stat-label">Activity (24h)</div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
